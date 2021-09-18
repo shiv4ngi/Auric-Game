@@ -4,7 +4,7 @@ const { MongoClient } = require("mongodb");
 
 var url = "mongodb://localhost:27017/gamedb";
 
-router.get("/operator", (req, res) => {
+router.get("/", (req, res) => {
   MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("gamedb");

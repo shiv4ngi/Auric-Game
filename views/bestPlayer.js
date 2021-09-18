@@ -8,23 +8,19 @@ router.get("/", (req, res) => {
   var operator = req.query.operator;
   var operatorName = req.query.operatorName;
   var operatorGameType = req.query.operatorGameType;
+
   MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("gamedb");
     dbo
       .collection("game")
-      .find(
-        {},
-        {
-          projection: {
-            _id: 0,
-            dfsSlatePlayers: 1,
-            operator: operator,
-            operatorGameType: operatorGameType,
-            operatorName: operatorName,
-          },
-        }
-      )
+      .find({
+        $and: [
+          { operator: operator },
+          { operatorGameType: operatorGameType },
+          { operatorName: operatorName },
+        ],
+      })
       //TODO: Find a way to use MongoDB sort and limit
       .toArray(function (err, result) {
         if (err) throw err;
